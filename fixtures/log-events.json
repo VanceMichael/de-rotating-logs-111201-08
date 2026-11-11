@@ -1,0 +1,33 @@
+{
+  "events": [
+    {
+      "op": "write",
+      "path": "rig.log",
+      "text": "{\"device\":\"r\",\"epoch\":\"b1\",\"sequence\":1,\"value\":\"正常\"}\n"
+    },
+    {
+      "op": "append_bytes",
+      "path": "rig.log",
+      "hex": "e9"
+    },
+    {
+      "op": "rotate",
+      "from": "rig.log",
+      "to": "rig.log.1"
+    },
+    {
+      "op": "append_bytes",
+      "path": "rig.log.1",
+      "hex": "ab98"
+    },
+    {
+      "op": "create",
+      "path": "rig.log",
+      "epoch": "b2"
+    },
+    {
+      "op": "truncate",
+      "path": "rig.log"
+    }
+  ]
+}
