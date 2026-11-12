@@ -2,6 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+from .follow import status_view
 from .storage import Store
 
 
@@ -10,14 +11,15 @@ def serve(database, port):
 
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
-            if self.path != '/records':
+            if self.path not in ('/records', '/files'):
                 status = 404
                 data = json.dumps({'error': '资源不存在'}, ensure_ascii=False).encode('utf-8')
             else:
                 status = 200
                 store = Store(database)
                 try:
-                    data = json.dumps(store.records(), ensure_ascii=False).encode('utf-8')
+                    payload = store.records() if self.path == '/records' else status_view(store)
+                    data = json.dumps(payload, ensure_ascii=False).encode('utf-8')
                 finally:
                     store.close()
             self.send_response(status)
